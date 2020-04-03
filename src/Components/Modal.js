@@ -40,9 +40,8 @@ class ModalForm extends Component {
           <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
           <ModalBody>
             <AddItem
-              addItem={this.props.addItem}
               toggle={this.toggle}
-              item={this.props.item} />
+            />
           </ModalBody>
         </Modal>
       </div>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import ModalForm from './Components/Modal'
 import DataTable from './Components/DataTable'
-// import { v4 as uuidv4 } from 'uuid';
 import { Provider } from './context';
 
 class App extends Component {
