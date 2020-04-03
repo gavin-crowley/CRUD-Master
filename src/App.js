@@ -2,44 +2,36 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import ModalForm from './Components/Modal'
 import DataTable from './Components/DataTable'
-
-const initialContacts = [
-  {
-    id: 1,
-    firstname: 'John',
-    lastname: 'Doe'
-  },
-  {
-    id: 2,
-    firstname: 'Karen',
-    lastname: 'Williams'
-  }
-];
+import { v4 as uuidv4 } from 'uuid';
 
 class App extends Component {
   state = {
-    items: []
+    items: this.returnItems()
   }
 
-  addItem = (item) => {
-    item.id = Math.random();
-    this.setState(prevState => ({
-      items: [...prevState.items, item]
-    }))
+  returnItems() {
+    if (localStorage.getItem('items') === null) localStorage.setItem('items', JSON.stringify([]))
+    return JSON.parse(localStorage.getItem('items'))
+  }
+
+  addItem = item => {
+    item.id = uuidv4();
+    let items = [item, ...this.state.items];
+    localStorage.setItem('items', JSON.stringify(items))
+    this.setState({
+      items
+    });
   }
 
   deleteItem = id => {
     const items = this.state.items.filter(item => item.id !== id);
+    // localStorage.setItem('items', JSON.stringify(items));
     this.setState({
       items
     });
   };
 
-  componentDidMount = () => {
-    this.setState({
-      items: initialContacts
-    });
-  };
+
 
   render() {
     return (
