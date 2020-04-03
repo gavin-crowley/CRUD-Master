@@ -3,31 +3,40 @@ import { Container, Row, Col } from 'reactstrap'
 import ModalForm from './Components/Modal'
 import DataTable from './Components/DataTable'
 import { v4 as uuidv4 } from 'uuid';
+import { db } from './config/fbConfig'
 
 class App extends Component {
   state = {
-    items: this.returnItems()
+    items: []
   }
 
-  returnItems() {
-    if (localStorage.getItem('items') === null) localStorage.setItem('items', JSON.stringify([]))
-    return JSON.parse(localStorage.getItem('items'))
+  componentDidMount() {
+    db.collection('items')
+      .get()
+      .then(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => doc.data());
+        this.setState({ items: data });
+      });
   }
 
-  addItem = item => {
+  addItem = (item) => {
     item.id = uuidv4();
-    let items = [item, ...this.state.items];
-    localStorage.setItem('items', JSON.stringify(items))
-    this.setState({
-      items
-    });
-  }
+    db.collection("items")
+      .doc(item.id.toString())
+      .set(item)
+      .then(function () {
+        console.log("Document successfully written!");
+      })
+      .catch(function (error) {
+        console.error("Error writing document: ", error);
+      });
+  };
 
   deleteItem = id => {
-    const items = this.state.items.filter(item => item.id !== id);
-    // localStorage.setItem('items', JSON.stringify(items));
-    this.setState({
-      items
+    db.collection('items').doc(id).delete().then(function () {
+      console.log("Document successfully deleted!");
+    }).catch(function (error) {
+      console.error("Error removing document: ", error);
     });
   };
 
