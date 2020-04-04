@@ -1,19 +1,60 @@
 import React, { Component } from 'react'
 import { Table, Button } from 'reactstrap';
+import axios from 'axios';
 
 class DataTable extends Component {
 
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: []
+    }
+    this.deleteItem = this.deleteItem.bind(this);
+  }
 
-    const items = this.props.items.map(item => {
+  // state = {
+  //   items: []
+  // }
+
+  componentDidMount = () => {
+    this.getItemList();
+  }
+
+  getItemList() {
+    axios.get('http://localhost:4000/items')
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          items: response.data
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // To delete any employee
+  deleteItem(id) {
+    axios.get('http://localhost:4000/items/deleteItem/' + id)
+      .then(() => {
+        console.log('Employee Deleted !!!')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    this.getItemList();
+  }
+
+  render() {
+    const itemList = this.state.items && this.state.items.map((item, i) => {
       return (
-        <tr key={item.id}>
-          <td>{item.firstname}</td>
-          <td>{item.lastname}</td>
+        <tr key={i}>
+          <td>{item.firstName}</td>
+          <td>{item.lastName}</td>
           <td>
             <div>
               {' '}
-              <Button color="danger" onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
+              <Button color="danger" onClick={() => this.deleteItem(item._id)}>Delete</Button>
             </div>
           </td>
         </tr>
@@ -29,7 +70,7 @@ class DataTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {items}
+          {itemList}
         </tbody>
       </Table>
     )
