@@ -41,6 +41,7 @@ class ModalForm extends Component {
           <ModalBody>
             <AddItem
               toggle={this.toggle}
+              addItem={this.props.addItem}
             />
           </ModalBody>
         </Modal>

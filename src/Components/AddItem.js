@@ -1,72 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { Consumer } from '../context';
-import { v4 as uuidv4 } from 'uuid';
 
-class AddItem extends React.Component {
-  state = {
-    id: '',
-    firstname: '',
-    lastname: ''
+const AddItem = props => {
+
+  const initialFormState = { id: null, firstname: '', lastname: '' }
+  const [item, setItem] = useState(initialFormState)
+
+  const onChange = e => {
+    const { name, value } = e.target
+    setItem({ ...item, [name]: value })
   }
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
-
-  onSubmit = (dispatch, e) => {
+  const onSubmit = e => {
     e.preventDefault();
 
-    const { firstname, lastname } = this.state;
+    props.addItem(item);
+    setItem(initialFormState)
 
-    const newItem = {
-      id: uuidv4(),
-      firstname,
-      lastname
-    };
-
-    dispatch({ type: 'ADD_ITEM', payload: newItem });
-
-    this.setState({
-      firstname: '',
-      lastname: ''
-    });
-
-    this.props.toggle();
+    props.toggle();
 
   };
 
-
-
-  componentDidMount() {
-    if (this.props.item) {
-      const { id, firstname, lastname } = this.props.item
-      this.setState({ id, firstname, lastname })
-    }
-  }
-
-  render() {
-    return (
-      <Consumer>
-        {value => {
-          const { dispatch } = value;
-          return (
-            <Form onSubmit={this.onSubmit.bind(this, dispatch)}>
-              <FormGroup>
-                <Label>First Name</Label>
-                <Input type="text" name="firstname" id="first" onChange={this.onChange} value={this.state.firstname} />
-              </FormGroup>
-              <FormGroup>
-                <Label>Last Name</Label>
-                <Input type="text" name="lastname" id="last" onChange={this.onChange} value={this.state.lastname} />
-              </FormGroup>
-              <Button>Submit</Button>
-            </Form>
-          )
-        }}
-      </Consumer>
-    );
-  }
+  return (
+    <Form onSubmit={onSubmit}>
+      <FormGroup>
+        <Label>First Name</Label>
+        <Input type="text" name="firstname" id="first" onChange={onChange} value={item.firstname} />
+      </FormGroup>
+      <FormGroup>
+        <Label>Last Name</Label>
+        <Input type="text" name="lastname" id="last" onChange={onChange} value={item.lastname} />
+      </FormGroup>
+      <Button>Submit</Button>
+    </Form>
+  )
 }
 
 export default AddItem
