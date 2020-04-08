@@ -9,12 +9,6 @@ class DataTable extends Component {
   };
 
   render() {
-    // return (
-    // <React.Fragment>
-    {/* // {value => { */ }
-    // console.log(this.props)
-    // const { items } = this.props;
-    // console.log(items)
     const itemList = this.props.items.map(item => {
       return (
         <tr key={item.id}>
@@ -23,7 +17,7 @@ class DataTable extends Component {
           <td>
             <div>
               {' '}
-              {/* <Button color="danger" onClick={this.onDeleteClick.bind(this, item.id, this.props.dispatch)}>Delete</Button> */}
+              <Button color="danger" onClick={this.onDeleteClick.bind(this, item.id, this.props.dispatch)}>Delete</Button>
             </div>
           </td>
         </tr>
@@ -43,16 +37,10 @@ class DataTable extends Component {
         </tbody>
       </Table>
     )
-    {/* // }} */ }
-
-    // </React.Fragment>
-
   }
 }
 
 const mapStateToProps = state => ({
-  // firstname: state.firstname,
-  // lastname: state.lastname
   items: state.items
 })
 

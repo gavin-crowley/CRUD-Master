@@ -39,9 +39,9 @@ class ModalForm extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
           <ModalBody>
-            {/* <AddItem
+            <AddItem
               toggle={this.toggle}
-            /> */}
+            />
           </ModalBody>
         </Modal>
       </div>
