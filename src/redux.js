@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux';
 
 const Context = React.createContext();
 
@@ -25,15 +27,17 @@ const reducer = (state, action) => {
                     item => item.id !== action.payload
                 )
             };
-        case 'ADD_ITEM':
-            return {
-                ...state,
-                items: [action.payload, ...state.items]
-            };
+        // case 'ADD_ITEM':
+        //     return {
+        //         ...state,
+        //         items: [action.payload, ...state.items]
+        //     };
         default:
             return state;
     }
 };
+
+// const store = createStore(reducer);
 
 export class Provider extends Component {
     state = {
@@ -51,9 +55,9 @@ export class Provider extends Component {
 
     render() {
         return (
-            <Context.Provider value={this.state}>
+            <Provider store={store}>
                 {this.props.children}
-            </Context.Provider>
+            </Provider>
         );
     }
 }
